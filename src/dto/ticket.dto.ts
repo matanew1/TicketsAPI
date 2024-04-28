@@ -1,6 +1,6 @@
 // ticket.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsString, MinLength, Min } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, MinLength, Min, IsDate } from 'class-validator';
 
 export class TicketDto {
   @ApiProperty({
@@ -9,7 +9,7 @@ export class TicketDto {
     required: true,
   })
   @IsString()
-  @MinLength(1, { message: 'Name must have atleast 2 characters.' })
+  @MinLength(2, { message: 'Title must have at least 2 characters.' })
   @IsNotEmpty()
   title: string;
 
@@ -20,8 +20,7 @@ export class TicketDto {
   })
   @IsNotEmpty()
   @IsString()
-  @MinLength(2, { message: 'Name must have atleast 2 characters.' })
-  @IsNotEmpty()
+  @MinLength(2, { message: 'Description must have at least 2 characters.' })
   description: string;
 
   @ApiProperty({
@@ -33,4 +32,23 @@ export class TicketDto {
   @IsInt()
   @Min(0)
   price: number;
+
+  @ApiProperty({
+    example: 50,
+    description: 'The amount of tickets available',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
+  amount: number;
+
+  @ApiProperty({
+    example: '2025-01-01',
+    description: 'The date of the event',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsDate()
+  date: Date;
 }
