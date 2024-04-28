@@ -12,15 +12,15 @@ export class TicketService {
     private readonly ticketRepository: Repository<Ticket>,
   ) {}
 
-  getTickets(): Promise<Ticket[]> {
-    return this.ticketRepository.find();
+  async getTickets(): Promise<Ticket[]> {
+    return await this.ticketRepository.find();
   }
 
-  getTicketsByQuery(query: any): Promise<Ticket[]> {
-    return this.ticketRepository.find({ where: query });
+  async getTicketsByQuery(query: any): Promise<Ticket[]> {
+    return await this.ticketRepository.find({ where: query });
   }
 
-  createTicket(ticketDto: TicketDto): Promise<Ticket> {
+  async createTicket(ticketDto: TicketDto): Promise<Ticket> {
     const date = new Date(ticketDto.date);
     if (date < new Date()) {
       throw new BadRequestException(`Date of ${date} must be in the future.`);
@@ -32,10 +32,10 @@ export class TicketService {
     ticket.amount = ticketDto.amount;
     ticket.date = date;
 
-    return this.ticketRepository.save(ticket);
+    return await this.ticketRepository.save(ticket);
   }
 
-  updateTicket(id: string, ticketDto: TicketDto): Promise<Ticket> {
+  async updateTicket(id: string, ticketDto: TicketDto): Promise<Ticket> {
     const date = new Date(ticketDto.date);
     if (date < new Date()) {
       throw new BadRequestException('Date must be in the future.');
@@ -49,14 +49,18 @@ export class TicketService {
     ticket.date = date;
     ticket.id = +id;
 
-    return this.ticketRepository.save(ticket);
+    return await this.ticketRepository.save(ticket);
   }
 
-  deleteTicket(id: string): Promise<{ affected?: number }> {
-    return this.ticketRepository.delete(id);
+  async deleteTicket(id: string): Promise<{ affected?: number }> {
+    return await this.ticketRepository.delete(id);
   }
 
-  getTicketById(id: string): Promise<Ticket> {
-    return this.ticketRepository.findOneBy({ id: parseInt(id, 10) });
+  async getTicketById(id: string): Promise<Ticket> {
+    return await this.ticketRepository.findOneBy({ id: parseInt(id, 10) });
+  }
+
+  async deleteAllTickets(): Promise<void> {
+    return await this.ticketRepository.clear();
   }
 }

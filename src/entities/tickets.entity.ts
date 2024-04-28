@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToMany, Column } from 'typeorm';
+import { TicketRating } from './ticket_rating.entity'; // Assuming the TicketRating entity is in the same directory
 
 @Entity()
 export class Ticket {
@@ -19,4 +20,10 @@ export class Ticket {
 
   @Column({ type: 'date', default: () => 'CURRENT_DATE' })
   date: Date;
+
+  @OneToMany(() => TicketRating, (ticketRating) => ticketRating.ticket, {
+    cascade: true,
+    eager: true,
+  })
+  ratings: TicketRating[];
 }

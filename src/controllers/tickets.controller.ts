@@ -55,4 +55,10 @@ export class TicketController {
   async getTicketById(@Param('id') id: string): Promise<Ticket> {
     return this.ticketService.getTicketById(id);
   }
+
+  @Delete()
+  async deleteAllTickets(): Promise<string> {
+    await this.ticketService.deleteAllTickets();
+    return 'All tickets deleted successfully';
+  }
 }
