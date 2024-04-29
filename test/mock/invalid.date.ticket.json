@@ -1,0 +1,7 @@
+{
+    "title": "Concert",
+    "description": "A concert ticket",
+    "price": 100,
+    "amount": 10,
+    "date": "2022-12-31"
+}
