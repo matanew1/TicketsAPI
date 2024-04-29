@@ -1,14 +1,17 @@
+import { Ticket } from './../entities/tickets.entity';
 import { TicketRatingController } from './../controllers/tickets.rating.controller';
-import { TicketRating } from './../entities/ticket_rating.entity';
 import { TicketRatingService } from './../services/tickets.rating.service';
 import { Module } from '@nestjs/common';
-import { Ticket } from './../entities/tickets.entity';
+import { TicketRating } from './../entities/ticket_rating.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TicketRating, Ticket])],
+  imports: [TypeOrmModule.forFeature([Ticket, TicketRating])],
   controllers: [TicketRatingController],
-  providers: [TicketRatingService],
+  providers: [{
+    provide: 'ITicketRatingService',
+    useClass: TicketRatingService,
+  }],
 })
 
 export class TicketRatingModule {}

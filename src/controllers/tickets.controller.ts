@@ -1,8 +1,9 @@
 import { Ticket } from './../entities/tickets.entity';
 import { TicketDto } from './../dto/ticket.dto';
-import { TicketService } from './../services/tickets.service';
+import { ITicketService } from './../services/interfaces/ticket.service';
 import {
   Controller,
+  Inject,
   Put,
   Get,
   Post,
@@ -16,14 +17,20 @@ import { ApiTags, ApiBody, ApiQuery } from '@nestjs/swagger';
 @Controller('tickets')
 @ApiTags('Ticket API')
 export class TicketController {
-  constructor(private readonly ticketService: TicketService) {}
+  constructor(
+    @Inject('ITicketService') private readonly ticketService: ITicketService,
+  ) {}
 
   @Get()
   @ApiQuery({ name: 'title', required: false })
   @ApiQuery({ name: 'description', required: false })
   @ApiQuery({ name: 'price', required: false })
+  @ApiQuery({ name: 'rating', required: false })
   async getTickets(@Query() query?: any): Promise<Ticket[]> {
-    if (query && (query.title || query.description || query.price)) {
+    if (
+      query &&
+      (query.title || query.description || query.price || query.rating)
+    ) {
       return this.ticketService.getTicketsByQuery(query);
     }
 

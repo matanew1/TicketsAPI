@@ -5,9 +5,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import Validator from '../utils/ticket.validate';
+import { ITicketRatingService } from './interfaces/ticket.rating.service';
 
 @Injectable()
-export class TicketRatingService {
+export class TicketRatingService implements ITicketRatingService {
   constructor(
     @InjectRepository(TicketRating)
     private readonly ticketRatingRepository: Repository<TicketRating>,
@@ -20,8 +21,8 @@ export class TicketRatingService {
   ): Promise<TicketRating> {
     const { ticketId, rating } = ticketRatingDto;
     const ticket = await this.ticketRepository.findOneBy({ id: ticketId });
-    Validator.validateFindTicket(ticket);
-    Validator.validateTicketRating(rating);
+    Validator.ticketExist(ticket);
+    Validator.ticketRatingIsValid(rating);
     const ticketRating = new TicketRating();
     ticketRating.ticket = ticket;
     ticketRating.rating = rating;
