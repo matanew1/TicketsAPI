@@ -2,13 +2,12 @@
     "version": 2,
     "builds": [
       {
-        "src": "nest-cli.json",
+        "src": "dist/main.js", 
         "use": "@vercel/node"
       }
     ],
     "routes": [
-      { "handle": "filesystem" },
-      { "src": "/(.*)", "dest": "nest-cli.json" }
+      { "src": "/(.*)", "dest": "dist/main.js" }
     ]
   }
   
